@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SellNS">
+	
+	<!-- select 태그의 id 속성 값은 Dao 인터페이스의 추상메서드명과 동일하게-->
+	<!-- select 태그의 resultType 속성은 <typeAlias> 태그로 지정한 타입 이름이 올 수 있다.-->
+	<select id="selectAll" resultType="SellVO">
+		select * from sell
+	</select>
+	
+	<select id="selectByIdentifier" parameterType="java.lang.String" resultType="SellVO">
+		select * from sell where identifier=#{identifier}
+	</select>
+	
+	<select id="selectByTitle" parameterType="java.lang.String" resultType="SellVO">
+		select * from sell where title like CONCAT('%',#{title},'%')
+	</select>
+	
+	<select id="selectByMemberId" parameterType="java.lang.String" resultType="SellVO">
+		select * from sell where id=#{id}
+	</select>
+	
+	<select id="selectByUnit" parameterType="java.lang.String" resultType="SellVO">
+		select * from sell where unit=#{unit}
+	</select>
+	
+	<select id="selectByLocation" parameterType="java.lang.String" resultType="SellVO">
+		select * from sell where location like CONCAT('%',#{location},'%')
+	</select>
+	
+	
+	
+	<!-- distinct 로 구별해서 검색 sum, avg, max, min, count 등등 함수 쓰기 , CDATA -->
+	<select id="unitCount" resultType="int">
+		select count(distinct unit) from sell
+	</select>
+	<select id="moneyAverage" parameterType="java.lang.String" resultType="double">
+		select avg(money) from sell where unit=#{unit}
+	</select>
+	<select id="suggestAverage" parameterType="java.lang.String" resultType="double">
+		select avg(suggest) from sell where unit=#{unit}
+	</select>
+	
+	<!-- DB에 있는 화폐 종류들을 리턴 -->
+	<select id="selectUnits" resultType="java.lang.String">
+		select distinct unit from sell;
+	</select>
+		
+	
+	<insert id="insertSell" parameterType="SellVO">
+		insert into sell(title, id, date, location, address, unit, money, suggest, content, identifier) values(#{title},#{id},#{date},#{location},#{address},#{unit},#{money},#{suggest},#{content},#{identifier})
+	</insert>
+	
+	<update id="updateSell" parameterType="SellVO">
+		update sell set title=#{title}, location=#{location}, address=#{address}, unit=#{unit}, money=#{money}, suggest=#{suggest}, content=#{content} where identifier=#{identifier}
+	</update>
+	
+	<delete id="deleteSell" parameterType="SellVO">
+		delete from sell where identifier=#{identifier}
+	</delete>
+	
+	
+</mapper>

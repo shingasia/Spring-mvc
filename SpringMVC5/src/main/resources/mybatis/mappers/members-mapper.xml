@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberNS">
+	<!-- ResultMap은 select에서만 사용할 수 있다. -->
+	<!-- ResultMap은 DB 필드값과 DTO객체의 프라퍼티(변수)명이 다를 때 사용한다. -->
+	<!-- ResultMap id에 사용할 임의의 이름을 기술하고 type(type="Department")에는 DTO명을 적어준다. -->
+	<!-- <result column="department_id" property="deptId" />
+			column 에는 DB의 필드명을 적고 property에는 DTO 프라퍼티명을 적어준다. -->
+	<!-- 
+	<resultMap id="Memb" type="spring.mem.Member">
+		<result column="id" property="id" javaType="java.lang.String" jdbcType="VARCHAR2" />
+		<result column="password" property="password" javaType="java.lang.String" jdbcType="VARCHAR2" />
+		<result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR2" />
+		<result column="phone" property="phone" javaType="java.lang.String" jdbcType="VARCHAR2" />
+	</resultMap>
+	-->
+	
+	
+	<!-- select 태그의 id 속성 값은 Dao 인터페이스의 추상메서드명과 동일하게-->
+	<!-- select 태그의 resultType 속성은 <typeAlias> 태그로 지정한 타입 이름이 올 수 있다.-->
+	<select id="selectById" parameterType="java.lang.String" resultType="Memb">
+		select * from member where id=#{id}
+	</select>
+	
+	<select id="selectAll" resultType="Memb">
+		select * from member
+	</select>
+	
+	<insert id="insert" parameterType="Memb">
+		insert into member(id, password, name, phone, location, address) values(#{id},#{password},#{name},#{phone},#{location},#{address})
+	</insert>
+	
+	<delete id="delete" parameterType="Memb">
+		delete from member where id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="Memb">
+		update member set password=#{password} where id=#{id}
+	</update>
+	
+	
+</mapper>
